@@ -36,7 +36,7 @@ public class WaitingScreen extends JFrame{
 		heading.setBounds(0,0,1000,250);
 		
 		Font font = new Font("Serif", Font.BOLD,100);
-		JLabel title = new JLabel("成大GAME");
+		JLabel title = new JLabel("NCKU GAME");
 		title.setFont(font);
 		title.setBounds(300,100,300,100);
 		heading.add(title);
@@ -53,20 +53,20 @@ public class WaitingScreen extends JFrame{
 		add(background);
 			
 		//labels and buttons
-		JButton button1 = new JButton("加入遊戲 Join Game");
+		JButton button1 = new JButton("Join The Game");
 		button1.setSize(200,200);
 		container.add(button1);
 		button1.setAlignmentX(CENTER_ALIGNMENT);
 		button1.setAlignmentY(CENTER_ALIGNMENT);
 		button1.addActionListener(new MyListener1(title));
 		
-		JButton button2 = new JButton("查看規則 Rules");
+		JButton button2 = new JButton("Check The Rules");
 		container.add(button2);
 		button2.setAlignmentX(CENTER_ALIGNMENT);
 		button2.setAlignmentY(CENTER_ALIGNMENT);
 		button2.addActionListener(new MyListener2());
 		
-		JButton button3 = new JButton("離開遊戲");
+		JButton button3 = new JButton("Exit");
 		container.add(button3);
 		button3.setAlignmentX(CENTER_ALIGNMENT);
 		button3.setAlignmentY(CENTER_ALIGNMENT);
@@ -86,7 +86,12 @@ public class WaitingScreen extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			label.setText("等待更多玩家加入");	
+			if(PlayerSocket.playerState == PlayerSocket.NOT_JOINED) {
+				PlayerSocket.sentToServer = true;
+				PlayerSocket.receiveFromServer = true;
+				PlayerSocket.msg = "Requesting to join";
+				label.setText("等待更多玩家加入");	
+			}	
 		}		
 	}
 	//2

@@ -6,7 +6,8 @@ public class GameServer {
     public static ArrayList<Player> players = new ArrayList<Player>();
     //server state
     public static int WAITING = 0;
-    public static int HOMEPAGE = 1;
+    public static int STARTGAME = 1;
+    public static int ENDGAME = 10;
 
     public static int serverState = WAITING; // waiting for 3 players
     public static int playerNum = 0;
@@ -29,7 +30,7 @@ public class GameServer {
 
 class ClientConnection implements Runnable {
     private Socket socket;
-    private int playerIndex;
+    private int playerIndex = 0;
     
     public ClientConnection(Socket socket) { this.socket = socket; }
     public void run() {
@@ -39,26 +40,54 @@ class ClientConnection implements Runnable {
             while(true){
                 System.out.println("Current Player Number: " + GameServer.playerNum);
                 String clientText = clientInput.readLine();
-                System.out.println("From  Client: " + clientText);
-                //read request from players
-                if(GameServer.serverState != GameServer.WAITING){
-                    if(GameServer.playerNum >= 3){
-                        clientOutput.writeUTF("There are already 3 players!");
-                        break;
-                    }
-                }else if(clientText.equals("Requesting to join")){
-                    clientOutput.writeUTF("You joined the game!");
-                    //create player info
-                    playerIndex = GameServer.playerNum;
-                    GameServer.players.add(new Player());
-
-                    GameServer.playerNum++;
-
-                    if(GameServer.playerNum >= 3){
-                        GameServer.serverState = GameServer.HOMEPAGE; //start the game
-                    }
+                if(playerIndex != 0){
+                    System.out.println("From  Player"+ playerIndex + ": " + clientText);
+                }else{
+                    System.out.println("From  Client: " + clientText);
                 }
                 
+                //read request from players
+                //Waiting
+                switch(GameServer.serverState){
+                    case 0:{
+                        if(clientText.equals("Requesting to join")){
+                            clientOutput.writeUTF("You joined the game!");
+                            //create player info
+                            playerIndex = GameServer.playerNum;
+                            GameServer.players.add(new Player());
+        
+                            GameServer.playerNum++;
+                            playerIndex = GameServer.playerNum;
+        
+                            if(GameServer.playerNum >= 3){
+                                GameServer.serverState = GameServer.STARTGAME; //start the game
+                            }
+                        }else if(clientText.equals("Can I go to home screen?")){
+                            clientOutput.writeUTF("No, do not go to home screen");
+                        }
+                        break;
+                    }
+                    case 1:{
+                        if(clientText.equals("Requesting to join")){
+                            clientOutput.writeUTF("There are already 3 players!");
+                            clientInput.close();
+                            socket.close();
+                        }else if(clientText.equals("Can I go to home screen?")){
+                            clientOutput.writeUTF("Yes, go to home screen");
+                        }else if(clientText.equals("Record the score")){
+                            clientOutput.writeUTF("Sent your score, please");
+                            String score = clientInput.readLine();
+                            int receiveGameIndex = Integer.parseInt(("" + score.charAt(0)));
+                            String receiveScore = score.substring(3);
+                            GameServer.players.get(playerIndex-1).setScore(receiveGameIndex, receiveScore);
+                            clientOutput.writeUTF("Your " + receiveGameIndex + " game score is: " + receiveScore);
+                        }
+                        break;
+                    }
+                }
+                if(GameServer.serverState == GameServer.ENDGAME){
+                    break;
+                }
             }
             clientInput.close();
             socket.close();

@@ -1,12 +1,12 @@
 
 public class Player {
     private String name = "No Name";
-    private int[] score = {0,0,0};
+    private String[] score = {"0","0","0"};
 
     public void setName(String name){
         this.name = name;
     }
-    public void setScore(int gameIndex, int score){
+    public void setScore(int gameIndex, String score){
         this.score[gameIndex] = score;
     }
 
@@ -14,7 +14,7 @@ public class Player {
         return this.name;
     }
 
-    public int getScore(int gameIndex){
+    public String getScore(int gameIndex){
         return this.score[gameIndex];
     }
 }
