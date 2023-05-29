@@ -86,14 +86,14 @@ class ClientConnection implements Runnable {
                             socket.close();
                         }else if(clientText.equals("Can I go to home screen?")){
                             clientOutput.writeUTF("Yes, go to home screen");
-                        }else if(clientText.equals("Record the score")){
+                        }else if(clientText.equals("Record the current game score")){
                             clientOutput.writeUTF("Sent your score, please");
                             String score = clientInput.readLine();
                             int receiveGameIndex = Integer.parseInt(("" + score.charAt(0)));
                             String receiveScore = score.substring(3);
                             GameServer.players.get(playerIndex-1).setScore(receiveGameIndex, receiveScore);
                             clientOutput.writeUTF("Your " + receiveGameIndex + " game score is: " + receiveScore);
-                        }else if(clientText.equals("Check Finish")){
+                        }else if(clientText.equals("Check other players are Finished")){
                             for(int i = 0; i <3; i++){
                                 if(GameServer.checkPlayer(i) == 4){
                                     clientOutput.writeUTF("(Finished) " + GameServer.players.get(0).getName() + " finished all the games!");
@@ -113,6 +113,8 @@ class ClientConnection implements Runnable {
                                 String playerName = GameServer.players.get(i).getName();
                                 clientOutput.writeUTF(playerName + " " + scoreSum);
                             }
+                        }else if(clientInput.equals("Finished Game, Disconnect me")){
+                            GameServer.serverState = GameServer.ENDGAME; //disconnect the player
                         }
                         break;
                     }

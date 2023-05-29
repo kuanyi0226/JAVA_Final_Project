@@ -5,10 +5,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-
 public class PlayerSocket {
-	public static String[] name_scores = new String[3];
+	public static String[] name_scores = {"NO DATA","NO DATA","NO DATA"};
 	public static String[] playerProgress = new String[3];
 	public static String playerName = "No Name";
 	
@@ -18,10 +16,12 @@ public class PlayerSocket {
     public static int HOME_SCREEN = 2;
 	public static int GAMIMG = 3;
 	public static int SCORE_SCREEN = 4;
+	public static int FINISH = 5;
 
     static int playerState = NOT_JOINED;
     static int currentGame = 1;
 	static private String tempScore;
+	static private boolean gameOver = false;
     
     //create init window
     static WaitingScreen waitingScreen = new WaitingScreen();
@@ -40,7 +40,7 @@ public class PlayerSocket {
 		    DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
 		    DataInputStream serverInput = new DataInputStream(connectionSock.getInputStream());
 		    // Connection made, sending name.;
-		    while (true) {
+		    while (!gameOver) {
 		    	//Page exchange
 		    	if(changePage) {
 		    		switch(playerState){
@@ -108,7 +108,7 @@ public class PlayerSocket {
 								while(true){
 									allFinish = true;
 									//sent and read the progress of all the players/ check whether all finished
-									serverOutput.writeBytes("Check Finish" + "\n");
+									serverOutput.writeBytes("Check other players are Finished" + "\n");
 									for(int i = 0; i < 3; i++){
 										playerProgress[i] = serverInput.readUTF();
 										if(!playerProgress[i].substring(0, 10).equals("(Finished)")){
@@ -147,7 +147,7 @@ public class PlayerSocket {
 					case 3:{//gaming
 						switch(currentGame){
 							case 1:{
-								//join fist game
+								//join first game
 								GameCode gameCode = new GameCode();
 								gameCode.launch();
 								while(true) {
@@ -243,8 +243,22 @@ public class PlayerSocket {
 								break;
 							}
 						}
+						break;
 					}
 					case 4:{ //score screen
+						ScorePage scorePage = new ScorePage();
+						scorePage.setVisible(true);
+
+						try {
+							Thread.sleep(10000);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						
+						sentToServer = true;
+						receiveFromServer = false;
+						gameOver = true;
+						playerState = FINISH;
 						break;
 					}
 		            default:{
@@ -272,11 +286,15 @@ public class PlayerSocket {
 		                }
 						case 3:{ //gaming
 							playerState = HOME_SCREEN;
-							msg = "Record the score";
+							msg = "Record the current game score";
+							receiveFromServer = true;
 		                	break;
 		                }case 4:{//score page
 							//get all the scores
 							msg = "Get all the names & total scores";
+							break;
+						}case 5:{//finish
+							msg = "Finished Game, Disconnect me";
 							break;
 						}
 		                default:{

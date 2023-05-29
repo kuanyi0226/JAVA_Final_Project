@@ -54,8 +54,8 @@ public class WaitingScreen extends JFrame{
 
 		//TextField
 		JTextField nameField = new JTextField();
-		nameField.setColumns(10);;
-		container.add(nameField, BorderLayout.PAGE_START);
+		nameField.setColumns(10);
+		container.add(nameField);
 			
 		//labels and buttons
 		JButton button1 = new JButton("Join The Game");
