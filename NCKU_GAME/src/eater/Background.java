@@ -4,25 +4,30 @@ import java.awt.*;
 
 public class Background {
 	void paintSelf(Graphics g, int level) {
-		g.drawImage(GameImage.bgimg, 0, 0, null);
+		g.drawImage(GameImage2.bgimg, 0, 0, null);
+		Color brown = new Color(139, 69, 19);
+		Color oliveGreen = new Color(55, 120, 47);
 		
 		switch(GameFoodie.state) {
 			case 0:
-				GameImage.drawWord(g, "Start", Color.red, 80,600, 500);
+				GameImage2.drawWord(g, "Start", brown, 70, 490, 440);
 				break;
 			case 1:
-				GameImage.drawWord(g, "Time: "+GameImage.timeleft, Color.orange, 40, 150, 100);
-				GameImage.drawWord(g, "You can spend:  "+levelToMoney(level-1), Color.orange, 40, 700, 100);
-				GameImage.drawWord(g, "score: "+GameImage.score , Color.orange, 30, 1000, 850);
-				GameImage.drawWord(g, "Bank savings: "+GameImage.money , Color.orange, 30, 100, 850);
+				GameImage2.drawWord(g, "Time: "+GameImage2.timeleft, oliveGreen , 33, 37, 80);
+				GameImage2.drawWord(g, "You can spend:  "+levelToMoney(level-1), oliveGreen, 30, 690,780);
+				GameImage2.drawWord(g, "score: "+GameImage2.score, oliveGreen, 33, 850, 80);
+				GameImage2.drawWord(g, "Bank savings: "+GameImage2.money, oliveGreen, 30, 55, 782);
+				GameImage2.drawWord(g, "To next Lv: "+GameFoodie.nextLevel, oliveGreen, 30, 380, 80);
+				
 				break;
 			case 2:
-				GameImage.drawWord(g, "YOU GOT:"+GameImage.score, Color.orange, 70, 410, 500);
+				GameImage2.drawWord(g, "YOU GOT:"+GameImage2.score, oliveGreen, 70, 310, 440);
+				GameFoodie.isComplete = true;
 				break;
 			case 3:
-				GameImage.drawWord(g, "Super Mode", Color.orange, 70, 500, 100);
-				GameImage.drawWord(g, "score: "+GameImage.score , Color.orange, 30, 1000, 850);
-				GameImage.drawWord(g, "Time: "+GameImage.timeleft , Color.orange, 30, 100, 850);
+				GameImage2.drawWord(g, "Super Mode", oliveGreen, 40, 360, 80);
+				GameImage2.drawWord(g, "score: "+GameImage2.score, oliveGreen, 33, 850, 80);
+				GameImage2.drawWord(g, "Time: "+GameImage2.timeleft, oliveGreen , 33, 37, 80);
 				break;
 			case 4:
 				break;

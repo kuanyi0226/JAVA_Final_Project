@@ -14,7 +14,7 @@ public class Panel extends JPanel implements ActionListener {
 	public int[] codeY = new int[800];
 	
 	public static int foodIndex = 3;
-	public static int incorrectIndex = 3;
+	public static int incorrectIndex = 4;
 	
 	public static String direction = "R";
 	public static boolean isStart = false;

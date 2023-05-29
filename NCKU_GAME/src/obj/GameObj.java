@@ -3,14 +3,14 @@ package obj;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import utils.GameWin;
+import utils.GamePlane;
 
 public class GameObj {
 	
 	Image img;
 	int x, y, width, height;
 	double speed;
-	GameWin frame;
+	GamePlane frame;
 	
 	public Image getImg() {
 		return img;
@@ -51,7 +51,7 @@ public class GameObj {
 	public Window getFrame() {
 		return frame;
 	}
-	public void setFrame(GameWin frame) {
+	public void setFrame(GamePlane frame) {
 		this.frame = frame;
 	}
 	
@@ -70,7 +70,7 @@ public class GameObj {
 		this.speed = speed;
 	}
 	
-	public GameObj(Image img, int x, int y, int width, int height, double speed, GameWin frame) {
+	public GameObj(Image img, int x, int y, int width, int height, double speed, GamePlane frame) {
 		this.img = img;
 		this.x = x;
 		this.y = y;

@@ -6,18 +6,18 @@ import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
 import utils.GameImage;
-import utils.GameWin;
+import utils.GamePlane;
 
 public class BossObj extends GameObj {
 	
-	int life = 50;
+	public int life = 10;
 
 	public BossObj() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BossObj(Image img, int x, int y, int width, int height, double speed, GameWin frame) {
+	public BossObj(Image img, int x, int y, int width, int height, double speed, GamePlane frame) {
 		super(img, x, y, width, height, speed, frame);
 		// TODO Auto-generated constructor stub
 	}
@@ -26,7 +26,7 @@ public class BossObj extends GameObj {
 	public void paintSelf(Graphics gImage) {
 		// TODO Auto-generated method stub
 		super.paintSelf(gImage);
-		if (x < 0 || x > GameWin.width - this.width*2) {
+		if (x < 0 || x > GamePlane.width - this.width) {
 			speed = -speed;
 		}
 		x += speed;
@@ -38,7 +38,7 @@ public class BossObj extends GameObj {
 				life--;
 			}
 			if (life <= 0) {
-				GameWin.state = 4;
+				GamePlane.state = 4;
 			}
 		}
 
@@ -46,14 +46,14 @@ public class BossObj extends GameObj {
 		gImage.fillRect(20, 40, 100, 10);
 		
 		gImage.setColor(Color.RED);
-		gImage.fillRect(20, 40, life * 2, 10);
+		gImage.fillRect(20, 40, life, 10);
 	}
 
 	
 	@Override
 	public Rectangle2D.Double getRec() {
 		// TODO Auto-generated method stub
-		return super.getRec();
+		return new Rectangle2D.Double(x+20,y,width,height);
 	}
 
 	

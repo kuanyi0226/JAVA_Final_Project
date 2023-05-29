@@ -89,9 +89,11 @@ class ClientConnection implements Runnable {
                         }else if(clientText.equals("Record the current game score")){
                             clientOutput.writeUTF("Sent your score, please");
                             String score = clientInput.readLine();
-                            int receiveGameIndex = Integer.parseInt(("" + score.charAt(0)));
+                            System.out.println("From  Player"+ playerIndex + "-" + GameServer.players.get(playerIndex-1).getName() + ": " + score);
+                            int receiveGameIndex = Integer.parseInt(score.substring(0, 1));
                             String receiveScore = score.substring(3);
-                            GameServer.players.get(playerIndex-1).setScore(receiveGameIndex, receiveScore);
+                            GameServer.players.get(playerIndex-1).setScore(receiveGameIndex-1, receiveScore);
+                            System.out.println(receiveGameIndex + " " + receiveScore);
                             clientOutput.writeUTF("Your " + receiveGameIndex + " game score is: " + receiveScore);
                         }else if(clientText.equals("Check other players are Finished")){
                             for(int i = 0; i <3; i++){

@@ -4,27 +4,29 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 
-import utils.GameWin;
+import utils.GamePlane;
 
 public class PlaneObj extends GameObj{
 
+	public boolean invulnerable = true;
+	int count = 0;
 	
 	public PlaneObj() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PlaneObj(Image img, int x, int y, int width, int height, double speed, GameWin frame) {
+	public PlaneObj(Image img, int x, int y, int width, int height, double speed, GamePlane frame) {
 		super(img, x, y, width, height, speed, frame);
 		// TODO Auto-generated constructor stub
 		this.frame.addMouseMotionListener(new MouseAdapter() {
 			public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
-				if (GameWin.state != 3) {
-					if (e.getX() > 0 + width && e.getX() < GameWin.width - width) {
+				if (GamePlane.state != 3) {
+					if (e.getX() > 0 + width && e.getX() < GamePlane.width) {
 						PlaneObj.super.x = e.getX() - width;
 					}
-					if (e.getY() > 0 + height*2 && e.getY() < GameWin.height - height) {
+					if (e.getY() > 0 + height && e.getY() < GamePlane.height) {
 						PlaneObj.super.y = e.getY() - height;
 					}	
 				}
@@ -35,17 +37,36 @@ public class PlaneObj extends GameObj{
 	@Override
 	public void paintSelf(Graphics gImage) {
 		// TODO Auto-generated method stub
-		super.paintSelf(gImage);
+		if (invulnerable) {
+	        // Toggle visibility of the image based on time
+	        long currentTime = System.currentTimeMillis();
+	        boolean isVisible = (currentTime / 200) % 2 == 0; // Blink every 200 milliseconds
+	        
+	        if (isVisible) {
+	            // Draw the image only when it should be visible
+	            super.paintSelf(gImage);
+	            count++;
+	        }
+	        
+	        if (count > 50) {
+	        	invulnerable = false;
+	        	count = 0;
+	        }
+	        
+	    } else {
+	        // Draw the image normally when not invulnerable
+	        super.paintSelf(gImage);
+	    }
 		
-		if (this.frame.bossObj != null && this.getRec().intersects(this.frame.bossObj.getRec())) {
-			GameWin.state = 3;
+		if (!invulnerable && this.frame.bossObj != null && this.getRec().intersects(this.frame.bossObj.getRec())) {
+			invulnerable = true;
 		}
 	}
 
 	@Override
 	public Rectangle2D.Double getRec() {
 		// TODO Auto-generated method stub
-		return super.getRec();
+		return new Rectangle2D.Double(x+5,y,width,height);
 	}
 
 	

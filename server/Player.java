@@ -10,8 +10,8 @@ public class Player {
     public void setName(String name){
         this.name = name;
     }
-    public void setScore(int gameIndex, String score){
-        this.score[gameIndex] = score;
+    public void setScore(int gameIndex, String newScore){
+        this.score[gameIndex] = newScore;
     }
 
     public String getName(){

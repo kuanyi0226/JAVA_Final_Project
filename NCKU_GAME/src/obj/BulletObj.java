@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
 import utils.GameImage;
-import utils.GameWin;
+import utils.GamePlane;
 
 public class BulletObj extends GameObj {
 
@@ -14,7 +14,7 @@ public class BulletObj extends GameObj {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BulletObj(Image img, int x, int y, int width, int height, double speed, GameWin frame) {
+	public BulletObj(Image img, int x, int y, int width, int height, double speed, GamePlane frame) {
 		super(img, x, y, width, height, speed, frame);
 		// TODO Auto-generated constructor stub
 	}
@@ -25,11 +25,11 @@ public class BulletObj extends GameObj {
 		super.paintSelf(gImage);
 		y += speed;
 		
-		if (this.getRec().intersects(this.frame.planeObj.getRec())) {
-			GameWin.state = 3;
+		if (!this.frame.planeObj.invulnerable && this.getRec().intersects(this.frame.planeObj.getRec())) {
+			this.frame.planeObj.invulnerable = true;
 		}
 		
-		if (y > GameWin.height) {
+		if (y > GamePlane.height) {
 			this.x = -300;
 			this.y = 300;
 			GameImage.removeList.add(this);

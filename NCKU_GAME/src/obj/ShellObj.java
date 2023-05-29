@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
 import utils.GameImage;
-import utils.GameWin;
+import utils.GamePlane;
 
 public class ShellObj extends GameObj {
 
@@ -15,7 +15,7 @@ public class ShellObj extends GameObj {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ShellObj(Image img, int x, int y, int width, int height, double speed, GameWin frame) {
+	public ShellObj(Image img, int x, int y, int width, int height, double speed, GamePlane frame) {
 		super(img, x, y, width, height, speed, frame);
 		// TODO Auto-generated constructor stub
 	}

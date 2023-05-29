@@ -5,6 +5,10 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import eater.*;
+import obj.*;
+import utils.*;
+
 public class PlayerSocket {
 	public static String[] name_scores = {"NO DATA","NO DATA","NO DATA"};
 	public static String[] playerProgress = new String[3];
@@ -179,68 +183,44 @@ public class PlayerSocket {
 								break;
 							}
 							case 2:{
-								//join fist game
-								GameCode gameCode = new GameCode();
-								gameCode.launch();
+								//join second game
+								GamePlane gamePlane = new GamePlane();
+								gamePlane.launch();
 								while(true) {
-									if(Panel.isComplete) {
-										
-										if(Panel.isFail) {
-											try {
-												Thread.sleep(3000);
-											} catch (InterruptedException e1) {
-												e1.printStackTrace();
-											}
-										}else {
-											try {
-												Thread.sleep(8000);
-											} catch (InterruptedException e1) {
-												e1.printStackTrace();
-											}
-										}
-										tempScore = ("" + Panel.elapsedSeconds);//record score
-										sentToServer = true;
-										receiveFromServer = true;
-										changePage = false;
-										
-										gameCode.setVisible(false);
-										gameCode = null;									
+									if (GamePlane.isComplete){
 										break;
 									}
+									tempScore = ("" + GamePlane.score);
+									sentToServer = true;
+									receiveFromServer = true;
+									changePage = false;
+									gamePlane.setVisible(false);
+									gamePlane = null;
 								}
 								break;
 							}
 							case 3:{
-								//join fist game
-								GameCode gameCode = new GameCode();
-								gameCode.launch();
+								//join third game
+								GameFoodie gameFoodie = new GameFoodie();	
+								gameFoodie.launch();
 								while(true) {
-									if(Panel.isComplete) {
-										
-										if(Panel.isFail) {
-											try {
-												Thread.sleep(3000);
-											} catch (InterruptedException e1) {
-												e1.printStackTrace();
-											}
-										}else {
-											try {
-												Thread.sleep(8000);
-											} catch (InterruptedException e1) {
-												e1.printStackTrace();
-											}
+									if(GameFoodie.isComplete) {
+										try {
+											Thread.sleep(5000);
+										} catch (InterruptedException e1) {
+											e1.printStackTrace();
 										}
-										tempScore = ("" + Panel.elapsedSeconds);//record score
-										sentToServer = true;
-										receiveFromServer = true;
-										changePage = false;
-										
-										gameCode.setVisible(false);
-										gameCode = null;									
 										break;
 									}
 								}
-								break;
+								tempScore = ("" + GameImage2.score);//record score
+								sentToServer = true;
+								receiveFromServer = true;
+								changePage = false;
+								
+								gameFoodie.closeWindow();
+								gameFoodie = null;
+								break;		
 							}
 						}
 						break;
@@ -261,8 +241,7 @@ public class PlayerSocket {
 						playerState = FINISH;
 						break;
 					}
-		            default:{
-		            	
+		            default:{		            	
 		                break;
 		            }
 		        }
@@ -330,6 +309,7 @@ public class PlayerSocket {
 		                sentToServer = false;
 						String currentGameString = ("" + currentGame);
 						serverOutput.writeBytes(currentGameString + ": " + tempScore + "\n");
+						System.out.println("from server: " + serverInput.readUTF());
 		                changePage = true;
 						currentGame++;
 		            }else if(serverReply.equals("Please Read the following 3 names and scores")) {

@@ -10,15 +10,17 @@ import java.awt.event.MouseEvent;
 
 
 public class GameFoodie extends JFrame{
+	public static boolean isComplete = false;
+	public static boolean isStop = false;
 	
-	
+	public static int nextLevel = 10;
 	//state 
-	static int state = 0;
+	public static int state = 0;
 	
 	Image offScreenImage;
 	
-	private int width = 1400;
-	private int height = 900;
+	private int width = 1100;
+	private int height = 800;
 
 	private double random;
 	
@@ -33,6 +35,7 @@ public class GameFoodie extends JFrame{
 	Eater eater = new Eater();
 	
 	public void launch() {
+		//this.setFocusable(true);
 	    this.setVisible(true);
 		this.setSize(width, height);
 		//this.setResizable(false);
@@ -55,32 +58,51 @@ public class GameFoodie extends JFrame{
 	    	public void keyPressed(KeyEvent e) {
 	    		super.keyPressed(e);
 	    		if(e.getKeyCode() == 38) {
-	    			GameImage.UP = true;
+	    			GameImage2.UP = true;
 	    		}
 	    		if(e.getKeyCode() == 40) {
-	    			GameImage.DOWN = true;
+	    			GameImage2.DOWN = true;
 	    		}
 	    		if(e.getKeyCode() == 37) {
-	    			GameImage.LEFT = true;
+	    			GameImage2.LEFT = true;
 	    		}
 	    		if(e.getKeyCode() == 39) {
-	    			GameImage.RIGHT = true;
+	    			GameImage2.RIGHT = true;
+	    		}
+	    		if(e.getKeyCode() == 32) {
+	    			switch(state) {
+	    				case 1:
+	    				case 3:
+	    					isStop = true;
+	    					GameImage2.drawWord(getGraphics(), "Press Space to Continue", Color.blue, 50, 250, 440);
+	    					state = 4;
+	    					break;
+	    				case 4:
+	    					isStop = false;
+	    					if(eater.level >= 3) {
+	    						state = 3;
+	    					}else {
+	    						state = 1;
+	    					}
+	    					break;
+	    				
+	    			}
 	    		}
 	    	}
 	    	
 	    	public void keyReleased(KeyEvent e) {
 	    		super.keyReleased(e);
 	    		if(e.getKeyCode() == 38) {
-	    			GameImage.UP = false;
+	    			GameImage2.UP = false;
 	    		}
 	    		if(e.getKeyCode() == 40) {
-	    			GameImage.DOWN = false;
+	    			GameImage2.DOWN = false;
 	    		}
 	    		if(e.getKeyCode() == 37) {
-	    			GameImage.LEFT = false;
+	    			GameImage2.LEFT = false;
 	    		}
 	    		if(e.getKeyCode() == 39) {
-	    			GameImage.RIGHT = false;
+	    			GameImage2.RIGHT = false;
 	    		}
 	    	}
 	    	
@@ -88,23 +110,29 @@ public class GameFoodie extends JFrame{
 	    	
 	    });
 	    //create rest period
-	    while(true) {
-	    	if(repeatCount%20 == 0) {
-	    		GameImage.timeleft = GameImage.timeleft - 1;
-	    	}
-	    	if(GameImage.timeleft == 0) {
-	    		state = 2;
-	    	}
-	    	repaint();
-	    	repeatCount++;
-	    	try {
-				Thread.sleep(40);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+	    while(!isComplete) {
+		    	if(repeatCount%20 == 0 && !isStop) {
+		    		GameImage2.timeleft = GameImage2.timeleft - 1;
+		    	}
+		    	if(GameImage2.timeleft == 0) {
+		    		state = 2;
+		    		isComplete = true;
+		    	}
+		    	repaint();
+		    	repeatCount++;
+		    	try {
+					Thread.sleep(40);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	    	
 	    }
 	}//launch end
+	
+	public void closeWindow() {
+        dispose();
+    }
 	
 	
 	
@@ -122,24 +150,25 @@ public class GameFoodie extends JFrame{
 		case 1://in game
 			eater.paintSelf(gImage);
 			logic();
-			for(Restaurant rest:GameImage.RestaurantList) {
+			for(Restaurant rest:GameImage2.RestaurantList) {
 				rest.paintSelf(gImage);
 			}
 			break;
 		case 2://end
-//			for(Restaurant rest:GameImage.RestaurantList) {
+//			for(Restaurant rest:GameImage2.RestaurantList) {
 //				rest.paintSelf(gImage);
 //			}
 			break;
 		case 3://super state
 			eater.paintSelf(gImage);
 			logic();
-			for(Restaurant rest:GameImage.RestaurantList) {
+			for(Restaurant rest:GameImage2.RestaurantList) {
 				rest.paintSelf(gImage);
 			}
 			break;
 		case 4:
-			break;
+			
+			return;
 		default:
 		
 		}
@@ -150,24 +179,28 @@ public class GameFoodie extends JFrame{
 	
 	void logic() {
 		//me level
-		if(GameImage.score < 10) {
-			GameImage.level = 0;
+		if(GameImage2.score < 10) {
+			GameImage2.level = 0;
 			eater.level = 1;
+			nextLevel = 16 - GameImage2.score;
 			
-		}else if(GameImage.score <= 20) {
-			GameImage.level = 1;
+		}else if(GameImage2.score <= 16) {
+			GameImage2.level = 1;
+			nextLevel = 16 - GameImage2.score;
 			
-		}else if(GameImage.score <= 50) {
-			GameImage.level = 2;
+		}else if(GameImage2.score <= 28) {
+			GameImage2.level = 2;
 			eater.level = 2;
+			nextLevel = 28 - GameImage2.score;
 			
-		}else if(GameImage.score <= 115) {
-			GameImage.level = 3;
+		}else if(GameImage2.score <= 80) {
+			GameImage2.level = 3;
 			eater.level = 3;
+			nextLevel = 80 - GameImage2.score;
 			
-		}else if(GameImage.score <= 1000) {
+		}else if(GameImage2.score <= 1000) {
 			state = 3;
-			GameImage.level = 4;
+			GameImage2.level = 4;
 			eater.level = 5;
 			
 		}
@@ -176,74 +209,74 @@ public class GameFoodie extends JFrame{
 		
 		
 		//lv不同 餐廳不同
-		switch(GameImage.level) {
+		switch(GameImage2.level) {
 			case 4://super mode
-				if(repeatCount %5 == 0) {
+				if(repeatCount %8 == 0) {
 					if(random > 0.75) {
-						Restaurant restaurant = new Rest_13();
-						GameImage.RestaurantList.add(restaurant);
+						Restaurant restaurant = new Rest_15();
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.5 && random <= 0.75){
 						Restaurant restaurant = new Rest_14();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.25 && random <= 0.5) {
-						Restaurant restaurant = new Rest_15();
-						GameImage.RestaurantList.add(restaurant);
+						Restaurant restaurant = new Rest_13();
+						GameImage2.RestaurantList.add(restaurant);
 					}else{
 						Restaurant restaurant = new Rest_16();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}
 				}
 				break;	
 			//under 300
 			case 3:
 			case 2:
-				if(repeatCount %30 == 0) {
+				if(repeatCount %40 == 0) {
 					if(random > 0.75) {
 						Restaurant restaurant = new Rest_9();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.5 && random <= 0.75){
 						Restaurant restaurant = new Rest_10();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.25 && random <= 0.5) {
 						Restaurant restaurant = new Rest_11();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else{
 						Restaurant restaurant = new Rest_12();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}
 				}
 			//under 200
 			case 1:
-				if(repeatCount %20 == 0) {
+				if(repeatCount %30 == 0) {
 					if(random > 0.75) {
 						Restaurant restaurant = new Rest_5();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.5 && random <= 0.75){
 						Restaurant restaurant = new Rest_6();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.25 && random <= 0.5) {
 						Restaurant restaurant = new Rest_7();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else{
 						Restaurant restaurant = new Rest_8();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}
 				}
 			//under 100
 			case 0:
-				if(repeatCount %10 == 0) {
+				if(repeatCount %15 == 0) {
 					if(random > 0.75) {
 						Restaurant restaurant = new Rest_l();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.5 && random <= 0.75){
 						Restaurant restaurant = new Rest_r();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else if(random > 0.25 && random <= 0.5) {
 						Restaurant restaurant = new Rest_3();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}else{
 						Restaurant restaurant = new Rest_4();
-						GameImage.RestaurantList.add(restaurant);
+						GameImage2.RestaurantList.add(restaurant);
 					}
 				}
 			break;
@@ -251,22 +284,23 @@ public class GameFoodie extends JFrame{
 			
 		}
 		//move way
-		for(Restaurant rest:GameImage.RestaurantList) {
+		for(Restaurant rest:GameImage2.RestaurantList) {
 			rest.x = rest.x + rest.direction*rest.speed;
 			//撞到
 			if(eater.getRec().intersects(rest.getRec()) ) {
 				if(eater.level >= rest.type) {
 					rest.x = -200;
 					rest.y = -200;
-					GameImage.score = GameImage.score + rest.count;
+					GameImage2.score = GameImage2.score + rest.count;
 				}else {
 					rest.x = -200;
 					rest.y = -200;
-					GameImage.score = GameImage.score + rest.count;
-					GameImage.money = GameImage.money - rest.count*100;
+					GameImage2.score = GameImage2.score + rest.count;
+					GameImage2.money = GameImage2.money - rest.count*100;
 					//lose 
-					if(GameImage.money == 0) {
+					if(GameImage2.money == 0) {
 						state = 2; ///lose
+						isComplete = true;
 					}
 				}
 			}
@@ -277,9 +311,28 @@ public class GameFoodie extends JFrame{
 	
 	
 	
-	// public static void main(String[] arg) {
-	// 	//GameFoodie gameFoodie = new GameFoodie();
-	// 	//gameFoodie.launch();
-	// }
+	public static void main(String[] arg) {
+		GameFoodie gameFoodie = new GameFoodie();	
+		gameFoodie.launch();
+		while(true) {
+			if(isComplete) {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+//				tempScore = (""+GameImage2.score);
+//				setToServer = true;
+//				receiveFromServer = true;
+//				changePage = false;
+				
+				gameFoodie.closeWindow();
+				gameFoodie = null;
+				break;
+			}
+		}
+		
+		
+	}
 
 }
