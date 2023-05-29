@@ -11,16 +11,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class HomeScreen1 extends JFrame{
-	
 	public HomeScreen1() {
 		init();
 	}
 	
 	private void init() {
-		this.setLocationRelativeTo(null);
 		this.setSize(1000,800);
 		this.setTitle("Joining the 1st game...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program
+		this.setResizable(false);
 		
 	   
 		//Container

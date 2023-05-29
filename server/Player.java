@@ -1,7 +1,8 @@
 
 public class Player {
     private String name = "No Name";
-    private String[] score = {"0","0","0"};
+    private String[] score = {"-1","-1","-1"};
+    private int totalScore = 0;
 
     Player(String name){
         this.name = name;
@@ -12,6 +13,7 @@ public class Player {
     }
     public void setScore(int gameIndex, String newScore){
         this.score[gameIndex] = newScore;
+        totalScore += Integer.parseInt(newScore);
     }
 
     public String getName(){
@@ -20,5 +22,9 @@ public class Player {
 
     public String getScore(int gameIndex){
         return this.score[gameIndex];
+    }
+
+    public int getTotalScore(){
+        return totalScore;
     }
 }

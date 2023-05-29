@@ -40,7 +40,7 @@ public class PlayerSocket {
 	public static void main(String[] args) {
 		    try {
 		    // Connecting to server on port 8000(192.168.56.1/140.116.115.231)
-		    Socket connectionSock = new Socket("192.168.56.1", 6666);
+		    Socket connectionSock = new Socket("140.116.115.231", 8888);
 		    DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
 		    DataInputStream serverInput = new DataInputStream(connectionSock.getInputStream());
 		    // Connection made, sending name.;
@@ -50,6 +50,7 @@ public class PlayerSocket {
 		    		switch(playerState){
 		            case 0:{//not joined
 		            	waitingScreen.setVisible(true);
+						waitingScreen.setLocationRelativeTo(null);
 		            	break;
 		            }
 		            case 1:{//joined
@@ -63,6 +64,7 @@ public class PlayerSocket {
 								waitingScreen.setVisible(false);
 		            			waitingScreen = null; //destroy
 								HomeScreen1 homeScreen1 = new HomeScreen1();
+								homeScreen1.setLocationRelativeTo(null);
 								homeScreen1.setVisible(true);
 								
 								//wait for 3 sec
@@ -83,6 +85,7 @@ public class PlayerSocket {
 							}
 							case 2:{
 								HomeScreen2 homeScreen2 = new HomeScreen2();
+								homeScreen2.setLocationRelativeTo(null);
 								homeScreen2.setVisible(true);
 								
 								//wait for 3 sec
@@ -103,6 +106,7 @@ public class PlayerSocket {
 							}
 							case 3:{
 								HomeScreen3 homeScreen3 = new HomeScreen3();
+								homeScreen3.setLocationRelativeTo(null);
 								homeScreen3.setVisible(true);
 								
 								//wait for 3 sec
@@ -123,6 +127,7 @@ public class PlayerSocket {
 							}
 							case 4:{
 								HomeScreen4 homeScreen4 = new HomeScreen4();
+								homeScreen4.setLocationRelativeTo(null);
 								homeScreen4.setVisible(true);
 								boolean allFinish;
 
@@ -242,14 +247,9 @@ public class PlayerSocket {
 					}
 					case 4:{ //score screen
 						ScorePage scorePage = new ScorePage();
+						scorePage.setLocationRelativeTo(null);
 						scorePage.setVisible(true);
-
-						try {
-							Thread.sleep(10000);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-						
+					
 						sentToServer = true;
 						receiveFromServer = false;
 						gameOver = true;
@@ -289,7 +289,10 @@ public class PlayerSocket {
 							break;
 						}case 5:{//finish
 							msg = "Finished Game, Disconnect me";
-							break;
+							receiveFromServer = false;
+							sentToServer = false;
+							changePage = false;
+							break;						
 						}
 		                default:{
 		                    msg = "";

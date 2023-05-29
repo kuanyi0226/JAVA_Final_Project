@@ -9,11 +9,16 @@ import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class WaitingScreen extends JFrame{
 	
 	public WaitingScreen() {
 		init();
+	}
+	public static void main(String[] args){
+		WaitingScreen waitingScreen = new WaitingScreen();
+		waitingScreen.setVisible(true);
 	}
 	
 	private void init() {
@@ -21,11 +26,12 @@ public class WaitingScreen extends JFrame{
 		this.setTitle("Waiting Room");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program
 		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
-	   
+	
 		//Container
 		JPanel container = new JPanel();
-		container.setBounds(300, 300, 400, 350);
+		container.setBounds(350, 300, 400, 350);
 		container.setBackground(new Color(0,0,0,0));
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		//this.setContentPane(container);
@@ -55,65 +61,64 @@ public class WaitingScreen extends JFrame{
 
 		//TextField
 		JTextField nameField = new JTextField();
-		nameField.setColumns(10);
-		container.add(nameField);
-			
-		//labels and buttons
+		nameField.setMaximumSize(new Dimension(200, 30));
+		container.add(nameField, BorderLayout.CENTER);
+
+		//Name label
+		JLabel nameLabel = new JLabel("Type Your Name");
+		nameLabel.setForeground(Color.white);
+		nameLabel.setBounds(350, 400, 200, 200);
+		nameLabel.setSize(200, 200);
+		container.add(nameLabel);
+		
+		//blank
+		JLabel blank1 = new JLabel(" ");
+		blank1.setSize(200, 200);
+		container.add(blank1);
+
+		//blank
+		JLabel blank2 = new JLabel(" ");
+		blank2.setSize(200, 200);
+		container.add(blank2);
+
+		//buttons
 		JButton button1 = new JButton("Join The Game");
+		JButton button2 = new JButton("Exit");
+
 		button1.setSize(200,200);
 		container.add(button1);
 		button1.setAlignmentX(CENTER_ALIGNMENT);
 		button1.setAlignmentY(CENTER_ALIGNMENT);
-		button1.addActionListener(new MyListener1(title, nameField));
-		
-		JButton button2 = new JButton("Check The Rules");
+		button1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(PlayerSocket.playerState == PlayerSocket.NOT_JOINED) {
+					PlayerSocket.sentToServer = true;
+					PlayerSocket.receiveFromServer = true;
+					PlayerSocket.playerName = nameField.getText();
+					PlayerSocket.waitingScreen.setVisible(false);
+					title.setText("等待更多玩家加入");	
+					container.remove(nameField);
+					container.remove(button1);
+					container.remove(button2);
+					container.remove(nameLabel);
+				}	
+			}	
+		});
+		//blank
+		JLabel blank3 = new JLabel(" ");
+		blank3.setSize(200, 200);
+		container.add(blank3);
+	
 		container.add(button2);
 		button2.setAlignmentX(CENTER_ALIGNMENT);
 		button2.setAlignmentY(CENTER_ALIGNMENT);
-		button2.addActionListener(new MyListener2());
-		
-		JButton button3 = new JButton("Exit");
-		container.add(button3);
-		button3.setAlignmentX(CENTER_ALIGNMENT);
-		button3.setAlignmentY(CENTER_ALIGNMENT);
-		button3.addActionListener(new MyListener3());
-		
-		
-		
-		
-	
-	}
-//////////////////////////////////////////////
-	//Listener 1
-	private class MyListener1 implements ActionListener{
-		JLabel label;
-		JTextField field;
-		public MyListener1(JLabel label, JTextField field) {
-			this.label = label;
-			this.field = field;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(PlayerSocket.playerState == PlayerSocket.NOT_JOINED) {
-				PlayerSocket.sentToServer = true;
-				PlayerSocket.receiveFromServer = true;
-				PlayerSocket.playerName = field.getText();
-				label.setText("等待更多玩家加入");	
+		button2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}	
-		}		
-	}
-	//2
-	private class MyListener2 implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("Click");	
-		}		
-	}
-	//3
-	private class MyListener3 implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
-		}		
+		});	
+	
 	}
 }

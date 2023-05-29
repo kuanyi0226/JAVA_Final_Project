@@ -21,6 +21,7 @@ public class HomeScreen4 extends JFrame{
 		this.setSize(1000,800);
 		this.setTitle("Happy Graduation!");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program
+		this.setResizable(false);
 		
 	   
 		//Container

@@ -1,9 +1,13 @@
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
+import java.util.List;
+
 public class GameServer {
     //Record the players
-    public static ArrayList<Player> players = new ArrayList<Player>();
+    public static List<Player> players = new ArrayList<Player>();
     //server state
     public static int WAITING = 0;
     public static int STARTGAME = 1;
@@ -14,7 +18,7 @@ public class GameServer {
     public static void main(String[] args) {
         
         try {
-            ServerSocket serverSock = new ServerSocket(6666);
+            ServerSocket serverSock = new ServerSocket(8888);
             System.out.print("Server started...");
             while (true) {
                 Socket cSock = serverSock.accept();
@@ -30,7 +34,7 @@ public class GameServer {
     public static int checkPlayer(int playerIndex){ //1~3
         int gameIndex = 0;
         for(int i = 0; i < 3; i++){
-            if(players.get(playerIndex-1).getScore(i).equals("0")){
+            if(players.get(playerIndex-1).getScore(i).equals("-1")){
                 gameIndex = i + 1; //is playing ? game
                 return gameIndex;
             }   
@@ -107,13 +111,11 @@ class ClientConnection implements Runnable {
                             
                         }else if(clientText.equals("Get all the names & total scores")){
                             clientOutput.writeUTF("Please Read the following 3 names and scores");
+                            //sort the score
+                            Collections.sort(GameServer.players, Comparator.comparingInt(Player::getTotalScore).reversed());
                             for(int i = 0; i < 3; i++){
-                                int scoreSum = 0;
-                                for(int j = 0; j < 3; j++){
-                                    scoreSum += Integer.parseInt(GameServer.players.get(i).getScore(j));
-                                }
                                 String playerName = GameServer.players.get(i).getName();
-                                clientOutput.writeUTF(playerName + " " + scoreSum);
+                                clientOutput.writeUTF(playerName + " " + GameServer.players.get(i).getTotalScore());
                             }
                         }else if(clientInput.equals("Finished Game, Disconnect me")){
                             GameServer.serverState = GameServer.ENDGAME; //disconnect the player

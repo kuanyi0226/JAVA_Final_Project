@@ -11,6 +11,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ScorePage extends JFrame{
+
+	public static void main(String[] args){
+		ScorePage scorePage = new ScorePage();
+		scorePage.setVisible(true);
+	}
 	
 	public ScorePage() {
 		init();
@@ -21,11 +26,13 @@ public class ScorePage extends JFrame{
 		this.setSize(1000,800);
 		this.setTitle("Scores");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 	   
 		//Container
 		JPanel container = new JPanel();
-		container.setBounds(300, 300, 400, 350);
+		container.setBounds(350, 300, 400, 350);
 		container.setBackground(new Color(0,0,0,0));
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		//this.setContentPane(container);
@@ -54,11 +61,19 @@ public class ScorePage extends JFrame{
 		add(background);
 
 		//labels
-		JLabel player1NameScore = new JLabel(PlayerSocket.name_scores[0]);
+		JLabel player1NameScore = new JLabel("⭐第一名     " + PlayerSocket.name_scores[0] + " points");
+		player1NameScore.setForeground(Color.white);
+		player1NameScore.setFont(new Font("Serif", Font.BOLD,30));
 		container.add(player1NameScore);
-		JLabel player2NameScore = new JLabel(PlayerSocket.name_scores[1]);
+
+		JLabel player2NameScore = new JLabel("⭐第二名     " + PlayerSocket.name_scores[1] + " points");
+		player2NameScore.setForeground(Color.white);
+		player2NameScore.setFont(new Font("Serif", Font.BOLD,30));
 		container.add(player2NameScore);
-		JLabel player3NameScore = new JLabel(PlayerSocket.name_scores[2]);
+
+		JLabel player3NameScore = new JLabel("⭐第三名     " + PlayerSocket.name_scores[2] + " points");
+		player3NameScore.setForeground(Color.white);
+		player3NameScore.setFont(new Font("Serif", Font.BOLD,30));
 		container.add(player3NameScore);
 	
 	}
