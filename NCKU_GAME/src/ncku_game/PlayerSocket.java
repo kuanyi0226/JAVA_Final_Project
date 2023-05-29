@@ -2,18 +2,22 @@ package ncku_game;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.swing.*;
 
 
 
 public class PlayerSocket {
+	public static String[] name_scores = new String[3];
+	public static String[] playerProgress = new String[3];
+	public static String playerName = "No Name";
+	
     //player state
     public static int NOT_JOINED = 0;
     public static int JOINED = 1;
     public static int HOME_SCREEN = 2;
 	public static int GAMIMG = 3;
+	public static int SCORE_SCREEN = 4;
 
     static int playerState = NOT_JOINED;
     static int currentGame = 1;
@@ -95,6 +99,43 @@ public class PlayerSocket {
 								homeScreen3 = null;//destroy
 								break;
 							}
+							case 4:{
+								HomeScreen4 homeScreen4 = new HomeScreen4();
+								homeScreen4.setVisible(true);
+								boolean allFinish;
+
+								//wait for others finishing
+								while(true){
+									allFinish = true;
+									//sent and read the progress of all the players/ check whether all finished
+									serverOutput.writeBytes("Check Finish" + "\n");
+									for(int i = 0; i < 3; i++){
+										playerProgress[i] = serverInput.readUTF();
+										if(!playerProgress[i].substring(0, 10).equals("(Finished)")){
+											allFinish = false;
+										}
+									}
+									if(allFinish == true){
+										break;
+									}
+								}
+								
+								//wait for 2 sec
+								try {
+									Thread.sleep(2000);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+								homeScreen4.setVisible(false);
+								homeScreen4 = null;//destroy
+
+								sentToServer = true;
+								receiveFromServer = true;
+								changePage = true;
+								playerState = SCORE_SCREEN;
+
+								break;
+							}
 						}
 		            	//signal
 						playerState = GAMIMG;
@@ -170,9 +211,41 @@ public class PlayerSocket {
 								break;
 							}
 							case 3:{
+								//join fist game
+								GameCode gameCode = new GameCode();
+								gameCode.launch();
+								while(true) {
+									if(Panel.isComplete) {
+										
+										if(Panel.isFail) {
+											try {
+												Thread.sleep(3000);
+											} catch (InterruptedException e1) {
+												e1.printStackTrace();
+											}
+										}else {
+											try {
+												Thread.sleep(8000);
+											} catch (InterruptedException e1) {
+												e1.printStackTrace();
+											}
+										}
+										tempScore = ("" + Panel.elapsedSeconds);//record score
+										sentToServer = true;
+										receiveFromServer = true;
+										changePage = false;
+										
+										gameCode.setVisible(false);
+										gameCode = null;									
+										break;
+									}
+								}
 								break;
 							}
 						}
+					}
+					case 4:{ //score screen
+						break;
 					}
 		            default:{
 		            	
@@ -186,7 +259,7 @@ public class PlayerSocket {
 		            // Text to the server
 		            switch(playerState){
 		                case 0:{//not joined
-		                    msg = "Requesting to join";
+		                    msg = "Requesting to join, I'm " + playerName;
 		                    sentToServer = false;
 		                    break;
 		                }
@@ -201,7 +274,11 @@ public class PlayerSocket {
 							playerState = HOME_SCREEN;
 							msg = "Record the score";
 		                	break;
-		                }
+		                }case 4:{//score page
+							//get all the scores
+							msg = "Get all the names & total scores";
+							break;
+						}
 		                default:{
 		                    msg = "";
 		                    break;
@@ -237,6 +314,15 @@ public class PlayerSocket {
 						serverOutput.writeBytes(currentGameString + ": " + tempScore + "\n");
 		                changePage = true;
 						currentGame++;
+		            }else if(serverReply.equals("Please Read the following 3 names and scores")) {
+		            	receiveFromServer = false;
+		                sentToServer = false;
+						changePage = true;
+						for(int i = 0; i <3;i++){
+							name_scores[i] = serverInput.readUTF();
+						}
+		                
+						
 		            }
 		            
 		    	}

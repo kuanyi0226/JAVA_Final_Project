@@ -26,6 +26,18 @@ public class GameServer {
             System.out.println("disconnected..."); 
         }
     }
+
+    public static int checkPlayer(int playerIndex){ //1~3
+        int gameIndex = 0;
+        for(int i = 0; i < 3; i++){
+            if(players.get(playerIndex-1).getScore(i).equals("0")){
+                gameIndex = i + 1; //is playing ? game
+                break;
+            }   
+        }
+        gameIndex = 4; //finish
+        return gameIndex;
+    }
 }
 
 class ClientConnection implements Runnable {
@@ -41,7 +53,7 @@ class ClientConnection implements Runnable {
                 System.out.println("Current Player Number: " + GameServer.playerNum);
                 String clientText = clientInput.readLine();
                 if(playerIndex != 0){
-                    System.out.println("From  Player"+ playerIndex + ": " + clientText);
+                    System.out.println("From  Player"+ playerIndex + "-" + GameServer.players.get(playerIndex-1).getName() + ": " + clientText);
                 }else{
                     System.out.println("From  Client: " + clientText);
                 }
@@ -50,11 +62,11 @@ class ClientConnection implements Runnable {
                 //Waiting
                 switch(GameServer.serverState){
                     case 0:{
-                        if(clientText.equals("Requesting to join")){
+                        if(clientText.substring(0, 18).equals("Requesting to join")){
                             clientOutput.writeUTF("You joined the game!");
                             //create player info
                             playerIndex = GameServer.playerNum;
-                            GameServer.players.add(new Player());
+                            GameServer.players.add(new Player(clientText.substring(24)));
         
                             GameServer.playerNum++;
                             playerIndex = GameServer.playerNum;
@@ -68,7 +80,7 @@ class ClientConnection implements Runnable {
                         break;
                     }
                     case 1:{
-                        if(clientText.equals("Requesting to join")){
+                        if(clientText.substring(0, 18).equals("Requesting to join")){
                             clientOutput.writeUTF("There are already 3 players!");
                             clientInput.close();
                             socket.close();
@@ -81,6 +93,26 @@ class ClientConnection implements Runnable {
                             String receiveScore = score.substring(3);
                             GameServer.players.get(playerIndex-1).setScore(receiveGameIndex, receiveScore);
                             clientOutput.writeUTF("Your " + receiveGameIndex + " game score is: " + receiveScore);
+                        }else if(clientText.equals("Check Finish")){
+                            for(int i = 0; i <3; i++){
+                                if(GameServer.checkPlayer(i) == 4){
+                                    clientOutput.writeUTF("(Finished) " + GameServer.players.get(0).getName() + " finished all the games!");
+                                }else{
+                                    clientOutput.writeUTF(GameServer.players.get(0).getName() + " is playing Game" + GameServer.checkPlayer(i));
+                                }
+                                
+                            }
+                            
+                        }else if(clientText.equals("Get all the names & total scores")){
+                            clientOutput.writeUTF("Please Read the following 3 names and scores");
+                            for(int i = 0; i < 3; i++){
+                                int scoreSum = 0;
+                                for(int j = 0; j < 3; j++){
+                                    scoreSum += Integer.parseInt(GameServer.players.get(i).getScore(j));
+                                }
+                                String playerName = GameServer.players.get(i).getName();
+                                clientOutput.writeUTF(playerName + " " + scoreSum);
+                            }
                         }
                         break;
                     }

@@ -51,6 +51,11 @@ public class WaitingScreen extends JFrame{
 		background.add(heading);
 		background.setBounds(0,0,1000,800);
 		add(background);
+
+		//TextField
+		JTextField nameField = new JTextField();
+		nameField.setColumns(10);;
+		container.add(nameField, BorderLayout.PAGE_START);
 			
 		//labels and buttons
 		JButton button1 = new JButton("Join The Game");
@@ -58,7 +63,7 @@ public class WaitingScreen extends JFrame{
 		container.add(button1);
 		button1.setAlignmentX(CENTER_ALIGNMENT);
 		button1.setAlignmentY(CENTER_ALIGNMENT);
-		button1.addActionListener(new MyListener1(title));
+		button1.addActionListener(new MyListener1(title, nameField));
 		
 		JButton button2 = new JButton("Check The Rules");
 		container.add(button2);
@@ -81,15 +86,17 @@ public class WaitingScreen extends JFrame{
 	//Listener 1
 	private class MyListener1 implements ActionListener{
 		JLabel label;
-		public MyListener1(JLabel label) {
+		JTextField field;
+		public MyListener1(JLabel label, JTextField field) {
 			this.label = label;
+			this.field = field;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(PlayerSocket.playerState == PlayerSocket.NOT_JOINED) {
 				PlayerSocket.sentToServer = true;
 				PlayerSocket.receiveFromServer = true;
-				PlayerSocket.msg = "Requesting to join";
+				PlayerSocket.playerName = field.getText();
 				label.setText("等待更多玩家加入");	
 			}	
 		}		
