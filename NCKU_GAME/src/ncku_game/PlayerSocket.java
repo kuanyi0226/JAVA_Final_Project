@@ -73,6 +73,12 @@ public class PlayerSocket {
 								}
 								homeScreen1.setVisible(false);
 								homeScreen1 = null;//destroy
+
+								//signal
+								playerState = GAMIMG;
+								receiveFromServer = false;
+								sentToServer = false;
+								changePage = true;
 								break;
 							}
 							case 2:{
@@ -87,6 +93,12 @@ public class PlayerSocket {
 								}
 								homeScreen2.setVisible(false);
 								homeScreen2 = null;//destroy
+
+								//signal
+								playerState = GAMIMG;
+								receiveFromServer = false;
+								sentToServer = false;
+								changePage = true;
 								break;
 							}
 							case 3:{
@@ -101,6 +113,12 @@ public class PlayerSocket {
 								}
 								homeScreen3.setVisible(false);
 								homeScreen3 = null;//destroy
+
+								//signal
+								playerState = GAMIMG;
+								receiveFromServer = false;
+								sentToServer = false;
+								changePage = true;
 								break;
 							}
 							case 4:{
@@ -115,7 +133,8 @@ public class PlayerSocket {
 									serverOutput.writeBytes("Check other players are Finished" + "\n");
 									for(int i = 0; i < 3; i++){
 										playerProgress[i] = serverInput.readUTF();
-										if(!playerProgress[i].substring(0, 10).equals("(Finished)")){
+										System.out.println(playerProgress[i]);
+										if(playerProgress[i].substring(0, 10).equals("(Finished)") == false){
 											allFinish = false;
 										}
 									}
@@ -141,11 +160,6 @@ public class PlayerSocket {
 								break;
 							}
 						}
-		            	//signal
-						playerState = GAMIMG;
-						receiveFromServer = false;
-						sentToServer = false;
-						changePage = true;
 		            	break;
 		            }
 					case 3:{//gaming
@@ -190,13 +204,14 @@ public class PlayerSocket {
 									if (GamePlane.isComplete){
 										break;
 									}
-									tempScore = ("" + GamePlane.score);
-									sentToServer = true;
-									receiveFromServer = true;
-									changePage = false;
-									gamePlane.setVisible(false);
-									gamePlane = null;
+									
 								}
+								tempScore = ("" + GamePlane.score);
+								sentToServer = true;
+								receiveFromServer = true;
+								changePage = false;
+								gamePlane.setVisible(false);
+								gamePlane = null;
 								break;
 							}
 							case 3:{

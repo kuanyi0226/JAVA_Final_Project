@@ -20,6 +20,7 @@ public class WaitingScreen extends JFrame{
 		this.setSize(1000,800);
 		this.setTitle("Waiting Room");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program
+		this.setLocationRelativeTo(null);
 		
 	   
 		//Container

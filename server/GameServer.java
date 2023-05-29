@@ -32,7 +32,7 @@ public class GameServer {
         for(int i = 0; i < 3; i++){
             if(players.get(playerIndex-1).getScore(i).equals("0")){
                 gameIndex = i + 1; //is playing ? game
-                break;
+                return gameIndex;
             }   
         }
         gameIndex = 4; //finish
@@ -97,10 +97,10 @@ class ClientConnection implements Runnable {
                             clientOutput.writeUTF("Your " + receiveGameIndex + " game score is: " + receiveScore);
                         }else if(clientText.equals("Check other players are Finished")){
                             for(int i = 0; i <3; i++){
-                                if(GameServer.checkPlayer(i) == 4){
-                                    clientOutput.writeUTF("(Finished) " + GameServer.players.get(0).getName() + " finished all the games!");
+                                if(GameServer.checkPlayer(i+1) == 4){
+                                    clientOutput.writeUTF("(Finished) " + GameServer.players.get(i).getName() + " finished all the games!");
                                 }else{
-                                    clientOutput.writeUTF(GameServer.players.get(0).getName() + " is playing Game" + GameServer.checkPlayer(i));
+                                    clientOutput.writeUTF(GameServer.players.get(i).getName() + " is playing Game" + GameServer.checkPlayer(i+1));
                                 }
                                 
                             }

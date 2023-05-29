@@ -17,6 +17,7 @@ public class HomeScreen2 extends JFrame{
 	}
 	
 	private void init() {
+		this.setLocationRelativeTo(null);
 		this.setSize(1000,800);
 		this.setTitle("Joining the 2nd game...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program

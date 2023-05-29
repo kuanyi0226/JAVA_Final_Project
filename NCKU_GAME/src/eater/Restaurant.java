@@ -9,7 +9,7 @@ public class Restaurant {
 	Image img;
 	
 	int x;
-	int y;
+	int y = setY;
 	int width;
 	int height;
 	int speed;
