@@ -38,7 +38,7 @@ public class PlayerSocket {
 	public static void main(String[] args) {
 		    try {
 		    // Connecting to server on port 8000(192.168.56.1/140.116.115.231)
-		    Socket connectionSock = new Socket("192.168.104.119", 8888);
+		    Socket connectionSock = new Socket("140.116.115.231", 8888);
 		    DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
 		    DataInputStream serverInput = new DataInputStream(connectionSock.getInputStream());
 		    // Connection made, sending name.;
@@ -61,7 +61,7 @@ public class PlayerSocket {
 							case 1:{
 								waitingScreen.setVisible(false);
 		            			waitingScreen = null; //destroy
-								HomeScreen1 homeScreen1 = new HomeScreen1();
+								HomeScreen homeScreen1 = new HomeScreen(1);
 								homeScreen1.setLocationRelativeTo(null);
 								homeScreen1.setVisible(true);
 								
@@ -82,7 +82,7 @@ public class PlayerSocket {
 								break;
 							}
 							case 2:{
-								HomeScreen2 homeScreen2 = new HomeScreen2();
+								HomeScreen homeScreen2 = new HomeScreen(2);
 								homeScreen2.setLocationRelativeTo(null);
 								homeScreen2.setVisible(true);
 								
@@ -103,7 +103,7 @@ public class PlayerSocket {
 								break;
 							}
 							case 3:{
-								HomeScreen3 homeScreen3 = new HomeScreen3();
+								HomeScreen homeScreen3 = new HomeScreen(3);
 								homeScreen3.setLocationRelativeTo(null);
 								homeScreen3.setVisible(true);
 								
