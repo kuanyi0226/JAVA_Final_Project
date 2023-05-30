@@ -1,13 +1,10 @@
 package code;
 
-
-
 import java.awt.Color;
 
 import java.io.*;
 
 import javax.sound.sampled.*;
-import javax.swing.*;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -22,7 +19,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
 
 public class GameCode extends JFrame {
 	public GameCode() {
@@ -179,37 +175,5 @@ public class GameCode extends JFrame {
             bgm = null;
         }
 	}
-
-	public static void main(String[] arg) {
-		GameCode gameCode = new GameCode();
-		gameCode.launch();
-		while(true) {
-			if(Panel.isComplete) {
-				
-				if(Panel.isFail) {
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					gameCode.closeBGM();
-				}else {
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-					gameCode.closeBGM();
-				}
-				int realTime = (int)(Panel.elapsedSeconds - 60 / ( 180 - 60 ));
-				int realScore = (int)( 100 - ( realTime * 100 ) );
-				if(Panel.elapsedSeconds <= 60) realScore = 100;
-				//TODO://
-				//return score  ""+realScore;
-				
-				gameCode.setVisible(false);
-				
-			}
-		}
- 	}
+	
 }

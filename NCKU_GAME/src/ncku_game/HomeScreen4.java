@@ -1,13 +1,6 @@
 package ncku_game;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.function.Function;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class HomeScreen4 extends JFrame{
@@ -16,13 +9,7 @@ public class HomeScreen4 extends JFrame{
 	int height = 300;
 	public static String[] names = {"p1","p2","p3"};
 	public static int[] progress = {1,2,4};
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		HomeScreen4 loading = new HomeScreen4();
-		loading.setVisible(true);
-		loading.repaint();
-	}
-	
+
 	public HomeScreen4() {
 		init();
 	}

@@ -2,8 +2,6 @@ package ncku_game;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import code.*;
 import plane.*;

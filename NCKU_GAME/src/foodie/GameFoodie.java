@@ -7,7 +7,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import java.util.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -389,42 +388,10 @@ public class GameFoodie extends JFrame{
         }
 	}
 
-
-
 	public void closeBGM() {
 		if (bgm != null) {
             bgm.close();
             bgm = null;
         }
 	}
-	
-	
-	
-	
-	public static void main(String[] arg) {
-		GameFoodie gameFoodie = new GameFoodie();
-		gameFoodie.launch();
-		
-		while(true) {
-			if(isComplete) {
-				try {
-					Thread.sleep(5000);
-					gameFoodie.closeBGM();
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-//				tempScore = (""+GameImage.score);
-//				setToServer = true;
-//				receiveFromServer = true;
-//				changePage = false;
-				
-				gameFoodie.closeWindow();
-				gameFoodie = null;
-				break;
-			}
-		}
-		
-		
-	}
-
 }

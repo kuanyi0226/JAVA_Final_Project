@@ -62,7 +62,5 @@ public class GameImage {
 		g.drawString(str, x, y);
 	}
 	
-	
-	
-	
+
 }

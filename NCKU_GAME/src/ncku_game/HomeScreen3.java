@@ -1,13 +1,6 @@
 package ncku_game;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.function.Function;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class HomeScreen3 extends JFrame{

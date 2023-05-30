@@ -1,22 +1,10 @@
 package ncku_game;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.function.Function;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ScorePage extends JFrame{
-
-	public static void main(String[] args){
-		ScorePage scorePage = new ScorePage();
-		scorePage.setVisible(true);
-	}
-	
 	public ScorePage() {
 		init();
 	}
@@ -29,7 +17,7 @@ public class ScorePage extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-	   
+
 		//Container
 		JPanel container = new JPanel();
 		container.setBounds(350, 300, 400, 350);

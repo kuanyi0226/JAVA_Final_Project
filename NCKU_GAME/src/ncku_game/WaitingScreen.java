@@ -5,22 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.function.Function;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+
 
 public class WaitingScreen extends JFrame{
 	
 	public WaitingScreen() {
 		init();
-	}
-	public static void main(String[] args){
-		WaitingScreen waitingScreen = new WaitingScreen();
-		waitingScreen.setVisible(true);
 	}
 	
 	private void init() {

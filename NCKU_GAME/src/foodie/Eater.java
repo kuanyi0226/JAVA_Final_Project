@@ -1,8 +1,6 @@
 package foodie;
 import java.awt.*;
 
-
-
 public class Eater {
 	Image img = GameImage.Me;
 	Image img2 = GameImage.MeSuper;
