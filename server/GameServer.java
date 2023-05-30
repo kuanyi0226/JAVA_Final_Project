@@ -12,6 +12,7 @@ public class GameServer {
     public static int WAITING = 0;
     public static int STARTGAME = 1;
     public static int ENDGAME = 10;
+    public static int playerleaves = 3;
 
     public static int serverState = WAITING; // waiting for 3 players
     public static int playerNum = 0;
@@ -124,11 +125,16 @@ class ClientConnection implements Runnable {
                     }
                 }
                 if(GameServer.serverState == GameServer.ENDGAME){
+                    GameServer.playerleaves--;
                     break;
                 }
             }
             clientInput.close();
             socket.close();
+            
+            if(GameServer.playerleaves <= 0){
+                System.exit(0);
+            }
 
         } catch (Exception e) { 
             e.printStackTrace(); 

@@ -153,7 +153,7 @@ public class GamePlane extends JFrame {
 			for (int i = 0; i < GameImage.gameObjList.size(); i++) {
 				GameImage.gameObjList.get(i).paintSelf(gImage);
 			}
-			//GameImage.gameObjList.removeAll(GameImage.removeList);
+			GameImage.gameObjList.removeAll(GameImage.removeList);
 		}
 		if (state == 2) {
 	        // Game paused state
