@@ -102,9 +102,9 @@ class ClientConnection implements Runnable {
                         }else if(clientText.equals("Check other players are Finished")){
                             for(int i = 0; i <3; i++){
                                 if(GameServer.checkPlayer(i+1) == 4){
-                                    clientOutput.writeUTF("(Finished) " + GameServer.players.get(i).getName() + " finished all the games!");
+                                    clientOutput.writeUTF("(Finished) " + GameServer.players.get(i).getName() + " finishedTheGame " + GameServer.checkPlayer(i+1));
                                 }else{
-                                    clientOutput.writeUTF(GameServer.players.get(i).getName() + " is playing Game" + GameServer.checkPlayer(i+1));
+                                    clientOutput.writeUTF(GameServer.players.get(i).getName() + " isPlayingGame " + GameServer.checkPlayer(i+1));
                                 }
                                 
                             }

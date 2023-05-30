@@ -11,6 +11,17 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class HomeScreen4 extends JFrame{
+	static Image barImg = Toolkit.getDefaultToolkit().getImage("windowImgs/bar.png");
+	int width = 500;
+	int height = 300;
+	public static String[] names = {"p1","p2","p3"};
+	public static int[] progress = {1,2,4};
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		HomeScreen4 loading = new HomeScreen4();
+		loading.setVisible(true);
+		loading.repaint();
+	}
 	
 	public HomeScreen4() {
 		init();
@@ -44,7 +55,7 @@ public class HomeScreen4 extends JFrame{
 		heading.add(title);
 		
 		//background
-		ImageIcon background_img = new ImageIcon("assets/images/path4.png");
+		ImageIcon background_img = new ImageIcon("windowImgs/path4.png");
 		Image img = background_img.getImage();
 		Image temp_img = img.getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
 		background_img = new ImageIcon(temp_img);
@@ -56,5 +67,27 @@ public class HomeScreen4 extends JFrame{
 			
 		
 	}
+	public void paint(Graphics g) {
+		super.paint(g);
+		drawWord(g, names[0], Color.BLACK, 20, 320);
+		drawBar(g, Color.GREEN, progress[0], 300, this);
+		
+		drawWord(g, names[1], Color.BLACK, 20, 370);
+		drawBar(g, Color.GREEN, progress[1], 350, this);
+
+		drawWord(g, names[2], Color.BLACK, 20, 420);
+		drawBar(g, Color.GREEN, progress[2], 400, this);
+	}
 	
+	public static void drawWord(Graphics gImage, String str, Color color, int size, int y) {
+		gImage.setColor(color);
+		gImage.setFont(new Font("Arial", Font.BOLD, size));
+		gImage.drawString(str, 550, y);
+	}
+	
+	public static void drawBar(Graphics gImage, Color color, int progress, int y, Frame frame) {
+		gImage.setColor(color);
+		gImage.fillRect(250, y, 70*progress, 25);
+		gImage.drawImage(barImg, 250, y, 280, 30, frame);
+	}
 }

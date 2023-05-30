@@ -50,7 +50,7 @@ public class ScorePage extends JFrame{
 		heading.add(title);
 		
 		//background
-		ImageIcon background_img = new ImageIcon("assets/images/ncku_tree.png");
+		ImageIcon background_img = new ImageIcon("windowImgs/ncku_tree.png");
 		Image img = background_img.getImage();
 		Image temp_img = img.getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
 		background_img = new ImageIcon(temp_img);

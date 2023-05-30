@@ -44,7 +44,7 @@ public class HomeScreen2 extends JFrame{
 		heading.add(title);
 		
 		//background
-		ImageIcon background_img = new ImageIcon("assets/images/path2.png");
+		ImageIcon background_img = new ImageIcon("windowImgs/path2.png");
 		Image img = background_img.getImage();
 		Image temp_img = img.getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
 		background_img = new ImageIcon(temp_img);

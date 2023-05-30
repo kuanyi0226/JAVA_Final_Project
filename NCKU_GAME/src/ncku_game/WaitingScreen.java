@@ -3,6 +3,8 @@ package ncku_game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.function.Function;
@@ -24,9 +26,26 @@ public class WaitingScreen extends JFrame{
 	private void init() {
 		this.setSize(1000,800);
 		this.setTitle("Waiting Room");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE); //exit the whole program
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+		this.addWindowListener(new WindowAdapter() {
+			
+            public void windowClosing(WindowEvent e) {
+                int confirmed = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure you want to exit?",
+                        "Confirm Exit",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirmed == JOptionPane.YES_OPTION) {				              	
+                    dispose();
+					System.exit(0);
+                }
+            }
+        });
 		
 	
 		//Container
@@ -49,7 +68,7 @@ public class WaitingScreen extends JFrame{
 		heading.add(title);
 		
 		//background
-		ImageIcon background_img = new ImageIcon("assets/images/ncku_tree.png");
+		ImageIcon background_img = new ImageIcon("windowImgs/ncku_tree.png");
 		Image img = background_img.getImage();
 		Image temp_img = img.getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
 		background_img = new ImageIcon(temp_img);

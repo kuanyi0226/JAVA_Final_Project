@@ -42,7 +42,7 @@ public class HomeScreen1 extends JFrame{
 		heading.add(title);
 		
 		//background
-		ImageIcon background_img = new ImageIcon("assets/images/path1.png");
+		ImageIcon background_img = new ImageIcon("windowImgs/path1.png");
 		Image img = background_img.getImage();
 		Image temp_img = img.getScaledInstance(1000, 800, Image.SCALE_SMOOTH);
 		background_img = new ImageIcon(temp_img);

@@ -5,9 +5,9 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import eater.*;
-import obj.*;
-import utils.*;
+import code.*;
+import plane.*;
+import foodie.*;
 
 public class PlayerSocket {
 	public static String[] name_scores = {"NO DATA","NO DATA","NO DATA"};
@@ -40,7 +40,7 @@ public class PlayerSocket {
 	public static void main(String[] args) {
 		    try {
 		    // Connecting to server on port 8000(192.168.56.1/140.116.115.231)
-		    Socket connectionSock = new Socket("140.116.115.231", 8888);
+		    Socket connectionSock = new Socket("192.168.56.1", 8888);
 		    DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
 		    DataInputStream serverInput = new DataInputStream(connectionSock.getInputStream());
 		    // Connection made, sending name.;
@@ -128,26 +128,52 @@ public class PlayerSocket {
 							case 4:{
 								HomeScreen4 homeScreen4 = new HomeScreen4();
 								homeScreen4.setLocationRelativeTo(null);
-								homeScreen4.setVisible(true);
+								homeScreen4.setVisible(false);
+
 								boolean allFinish;
+								String[] tempName = {"Player1","Player2","Player3"};
+								int[] gameStage = {1,1,1};
+								boolean repaintLoading;
 
 								//wait for others finishing
 								while(true){
+									repaintLoading = false;
 									allFinish = true;
 									//sent and read the progress of all the players/ check whether all finished
 									serverOutput.writeBytes("Check other players are Finished" + "\n");
 									for(int i = 0; i < 3; i++){
 										playerProgress[i] = serverInput.readUTF();
 										System.out.println(playerProgress[i]);
+										if(playerProgress[i].substring(0, 10).equals("(Finished)")){
+											if(gameStage[i] != 4){
+												repaintLoading = true;
+											}
+											gameStage[i] = 4;
+											String[] tokens = playerProgress[i].split(" ");
+											tempName[i] = tokens[1];
+										}else{
+											String[] tokens = playerProgress[i].split(" ");
+											if(gameStage[i] != Integer.parseInt(tokens[2])){
+												repaintLoading = true;
+											}
+											tempName[i] = tokens[0];
+											gameStage[i] = Integer.parseInt(tokens[2]);
+										}
+										HomeScreen4.names[i] = tempName[i];
+										HomeScreen4.progress[i] = gameStage[i];
 										if(playerProgress[i].substring(0, 10).equals("(Finished)") == false){
 											allFinish = false;
 										}
 									}
+									if(repaintLoading){
+										homeScreen4.repaint();
+									}
+									
+									homeScreen4.setVisible(true);
 									if(allFinish == true){
 										break;
-									}
+									}			
 								}
-								
 								//wait for 2 sec
 								try {
 									Thread.sleep(2000);
@@ -171,34 +197,41 @@ public class PlayerSocket {
 						switch(currentGame){
 							case 1:{
 								//join first game
+								int realTime;
+								int realScore;
 								GameCode gameCode = new GameCode();
 								gameCode.launch();
 								while(true) {
-									if(Panel.isComplete) {
+									if(code.Panel.isComplete) {
 										
-										if(Panel.isFail) {
+										if(code.Panel.isFail) {
 											try {
 												Thread.sleep(3000);
 											} catch (InterruptedException e1) {
 												e1.printStackTrace();
 											}
+											gameCode.closeBGM();
 										}else {
 											try {
-												Thread.sleep(8000);
+												Thread.sleep(10000);
 											} catch (InterruptedException e1) {
 												e1.printStackTrace();
 											}
+											gameCode.closeBGM();
 										}
-										tempScore = ("" + Panel.elapsedSeconds);//record score
-										sentToServer = true;
-										receiveFromServer = true;
-										changePage = false;
-										
-										gameCode.setVisible(false);
-										gameCode = null;									
+										realTime = (int)(Panel.elapsedSeconds - 60 / ( 180 - 60 ));
+										realScore = (int)( 100 - ( realTime * 100 ) );
+										if(Panel.elapsedSeconds <= 60) realScore = 100;										
 										break;
 									}
 								}
+								tempScore = ("" + realScore);//record score
+								sentToServer = true;
+								receiveFromServer = true;
+								changePage = false;
+								
+								gameCode.setVisible(false);
+								gameCode = null;
 								break;
 							}
 							case 2:{
@@ -224,16 +257,17 @@ public class PlayerSocket {
 								GameFoodie gameFoodie = new GameFoodie();	
 								gameFoodie.launch();
 								while(true) {
-									if(GameFoodie.isComplete) {
+									if(foodie.GameFoodie.isComplete) {
 										try {
 											Thread.sleep(5000);
+											gameFoodie.closeBGM();
 										} catch (InterruptedException e1) {
 											e1.printStackTrace();
-										}
+										}										
 										break;
 									}
 								}
-								tempScore = ("" + GameImage2.score);//record score
+								tempScore = ("" + foodie.GameImage.score);//record score
 								sentToServer = true;
 								receiveFromServer = true;
 								changePage = false;
