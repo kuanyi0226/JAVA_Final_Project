@@ -7,7 +7,7 @@ import java.util.List;
 
 public class GameImage {
 	//time
-	public static int timeleft = 10;
+	public static int timeleft = 60;
 	
 	//money
 	public static int money = 1000;
