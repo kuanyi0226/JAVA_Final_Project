@@ -84,7 +84,7 @@ public class Panel extends JPanel implements ActionListener {
 	    if(isComplete) {
 	    	if(!isFail) {
 	    		GameImage.drawWord(g, "Good Job~ You Spend : " + elapsedSeconds + " sec", Color.WHITE, 40,200, 285);
-	    		GameImage.drawWord(g, "look at the masterpiece", Color.WHITE, 40,260, 432);
+	    		GameImage.drawWord(g, "View your work", Color.WHITE, 40,260, 432);
 	    	}else {
 	    		GameImage.drawWord(g, "I am Sorry, You Failed", Color.WHITE, 40,260, 400);
 	    	}
@@ -215,7 +215,7 @@ public class Panel extends JPanel implements ActionListener {
 				incorrectFoodY = setIncorrectY(foodY);
 				incorrectIndex = setIncorrectIndex(foodIndex);
 			}
-			if(length == 0 || elapsedSeconds >= 180) {
+			if(length == 0 || elapsedSeconds >= 30) { //if(length == 0 || elapsedSeconds >= 180) {
 				isFail = true;
 				isComplete = true;
 			}

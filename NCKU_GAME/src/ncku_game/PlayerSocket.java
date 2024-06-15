@@ -38,7 +38,7 @@ public class PlayerSocket {
 	public static void main(String[] args) {
 		    try {
 		    // Connecting to server on port 8000(192.168.56.1/140.116.115.231)
-		    Socket connectionSock = new Socket("192.168.212.119", 8888);
+		    Socket connectionSock = new Socket("140.116.114.112", 8888);
 		    DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
 		    DataInputStream serverInput = new DataInputStream(connectionSock.getInputStream());
 		    // Connection made, sending name.;

@@ -11,7 +11,7 @@ public class GamePlane extends JFrame {
 	
 	public static int state = 0;
 	public static int score = 0;
-	public static int time = 100;
+	public static int time = 10; //100
 	public static int width = 1000;
 	public static int height = 800;
 	public static boolean isComplete = false;
